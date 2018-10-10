@@ -32,7 +32,7 @@ function fuse_unmount {
 trap term_handler SIGINT SIGTERM
 trap cache_handler SIGHUP
 
-/usr/bin/unionfs -o cow,allow_other,direct_io,auto_cache,sync_read \
+/usr/bin/unionfs -o cow,allow_other,nonempty,direct_io,auto_cache,sync_read \
   -d \
   -o uid=$PUID \
   -o gid=$PGID \
