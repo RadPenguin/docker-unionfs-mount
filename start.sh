@@ -33,7 +33,6 @@ trap term_handler SIGINT SIGTERM
 trap cache_handler SIGHUP
 
 /usr/bin/unionfs -o cow,allow_other,nonempty,direct_io,auto_cache,sync_read \
-  -d \
   -o uid=$PUID \
   -o gid=$PGID \
   /read-write=RW:/read-only=RO \
