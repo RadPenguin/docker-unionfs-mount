@@ -32,13 +32,20 @@ function fuse_unmount {
 trap term_handler SIGINT SIGTERM
 trap cache_handler SIGHUP
 
-/usr/bin/unionfs -o cow,allow_other,nonempty,direct_io,auto_cache,sync_read \
-  -o uid=$PUID \
-  -o gid=$PGID \
+/usr/bin/unionfs \
+  -o allow_other `# allow access to other users` \
+  -o auto_cache `# enable caching based on modification times` \
+  -o auto_unmount `# auto unmount on process termination` \
+  -o cow `# enable copy-on-write` \
+  -o direct_io `# use direct I/O` \
+  -o gid=$PGID `# set file group` \
+  -o sync_read `# perform reads synchronously` \
+  -o uid=$PUID `# set file owner` \
+  -f `# foreground operation` \
   /read-write=RW:/read-only=RO \
   /unionfs
 
-echo "$( date +'%Y/%m/%d %H:%M:%S' ) unionfs crashed"
+echo "$( date +'%Y/%m/%d %H:%M:%S' ) unionfs crashed ($?)"
 fuse_unmount
 
 exit $?
